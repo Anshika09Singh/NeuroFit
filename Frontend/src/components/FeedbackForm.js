@@ -12,7 +12,7 @@ const FeedbackForm = () => {
     const feedback = { rating, comments, email };
 
     try {
-      const response = await fetch("https://neurofit-backend.onrender.com/send-feedback", {
+      const response = await fetch("https://neurofit-2-backend.onrender.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
