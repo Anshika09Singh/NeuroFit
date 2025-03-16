@@ -12,7 +12,7 @@
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",
-    "react-chat-widget": "^3.1.4",
+    "react-chatbot-kit": "^2.2.2",
     "react-confetti": "^6.1.0",
     "react-dom": "^18.3.1",
     "react-flow-renderer": "^10.3.17",
