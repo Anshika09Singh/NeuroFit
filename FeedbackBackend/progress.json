@@ -1,0 +1,44 @@
+[
+  {
+    "gameName": "Word Scramble Challenge",
+    "score": 100,
+    "difficulty": "Medium",
+    "timeSpent": "N/A",
+    "dateTime": "2025-06-08T11:51:16.910Z"
+  },
+  {
+    "gameName": "StoryFlip",
+    "score": 10,
+    "difficulty": "Easy",
+    "timeSpent": "1m 30s",
+    "dateTime": "2025-06-08T12:07:56.070Z"
+  },
+  {
+    "gameName": "StoryFlip",
+    "score": 10,
+    "difficulty": "Easy",
+    "timeSpent": "1m 30s",
+    "dateTime": "2025-06-08T12:07:59.486Z"
+  },
+  {
+    "gameName": "StoryFlip",
+    "score": 10,
+    "difficulty": "Easy",
+    "timeSpent": "1m 30s",
+    "dateTime": "2025-06-08T12:08:02.252Z"
+  },
+  {
+    "gameName": "Task Juggler",
+    "score": 87,
+    "difficulty": "Medium",
+    "timeSpent": "2m 10s",
+    "dateTime": "2025-06-08T12:08:50.591Z"
+  },
+  {
+    "gameName": "Brain Fitness Simulator",
+    "score": 85,
+    "difficulty": "Simulation",
+    "timeSpent": "0m 13s",
+    "dateTime": "2025-06-08T12:13:43.257Z"
+  }
+]

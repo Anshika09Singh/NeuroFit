@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { saveProgress } from '../api'; // adjust path if needed
 
 const BrainFitnessSimulator = () => {
   const [health, setHealth] = useState(100);
   const [message, setMessage] = useState('');
+  const [actionsTaken, setActionsTaken] = useState(0);
+  const [startTime] = useState(Date.now());
 
   const handleDecision = (decision) => {
     let changeInHealth = 0;
@@ -32,6 +35,24 @@ const BrainFitnessSimulator = () => {
     const newHealth = Math.min(Math.max(health + changeInHealth, 0), 100);
     setHealth(newHealth);
     setMessage(fact);
+    setActionsTaken((prev) => prev + 1);
+  };
+
+  const handleSaveProgress = () => {
+    const endTime = Date.now();
+    const timeSpentSec = Math.round((endTime - startTime) / 1000);
+    const timeSpent = `${Math.floor(timeSpentSec / 60)}m ${timeSpentSec % 60}s`;
+
+    const progress = {
+      gameName: 'Brain Fitness Simulator',
+      score: health,
+      difficulty: 'Simulation',
+      timeSpent,
+      dateTime: new Date().toISOString(),
+    };
+
+    saveProgress(progress);
+    alert("Progress saved successfully!");
   };
 
   return (
@@ -67,6 +88,14 @@ const BrainFitnessSimulator = () => {
         </div>
         {message && (
           <p className="mt-4 text-center italic text-yellow-300 transition duration-300">{message}</p>
+        )}
+        {actionsTaken > 0 && (
+          <button
+            onClick={handleSaveProgress}
+            className="mt-6 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded transition"
+          >
+            Save Progress
+          </button>
         )}
       </div>
     </div>

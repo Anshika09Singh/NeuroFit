@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { saveProgress } from '../api'; // adjust path if needed
 
-// List of words to scramble
 const wordList = ['brain', 'memory', 'puzzle', 'logic', 'neuro', 'cognitive', 'focus', 'mind'];
 
 const shuffleWord = (word) => {
@@ -18,8 +18,8 @@ const PuzzleWord = () => {
   const [userInput, setUserInput] = useState('');
   const [message, setMessage] = useState('');
   const [attempts, setAttempts] = useState(0);
+  const [saveStatus, setSaveStatus] = useState(''); // To show save progress status
 
-  // Shuffle a new word on game start or reset
   const initializeGame = () => {
     const randomWord = wordList[Math.floor(Math.random() * wordList.length)];
     setCurrentWord(randomWord);
@@ -27,28 +27,44 @@ const PuzzleWord = () => {
     setUserInput('');
     setMessage('');
     setAttempts(0);
+    setSaveStatus('');
   };
 
   useEffect(() => {
-    initializeGame(); // Start the game when the component mounts
+    initializeGame();
   }, []);
 
-  // Handle user input change
   const handleInputChange = (e) => {
     setUserInput(e.target.value);
   };
 
-  // Check if the input matches the original word
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (userInput.toLowerCase() === currentWord.toLowerCase()) {
       setMessage('Correct! Great job!');
+
+      // Prepare progress data
+      const progress = {
+        gameName: "Word Scramble Challenge",
+        score: 100,              // You can customize scoring logic if you want
+        difficulty: "Medium",    // Or make dynamic
+        timeSpent: "N/A",        // Could be timer-based if you add timer logic
+        dateTime: new Date().toISOString(),
+      };
+
+      // Save progress and update saveStatus
+      try {
+        await saveProgress(progress);
+        setSaveStatus('Progress saved successfully!');
+      } catch (err) {
+        setSaveStatus('Failed to save progress.');
+      }
+
     } else {
       setMessage('Incorrect! Try again.');
-      setAttempts(attempts + 1);
+      setAttempts(prev => prev + 1);
     }
   };
 
-  // Reset the game
   const resetGame = () => {
     initializeGame();
   };
@@ -71,10 +87,12 @@ const PuzzleWord = () => {
           onChange={handleInputChange}
           className="p-2 border border-gray-300 rounded w-full text-xl mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500"
           placeholder="Type your answer"
+          disabled={message === 'Correct! Great job!'}
         />
         <button
           className="bg-teal-500 text-white py-2 px-6 rounded hover:bg-teal-600 transition-all mb-4 shadow-lg"
           onClick={handleSubmit}
+          disabled={message === 'Correct! Great job!'}
         >
           Submit
         </button>
@@ -84,12 +102,15 @@ const PuzzleWord = () => {
         </div>
 
         {message === 'Correct! Great job!' && (
-          <button
-            className="bg-green-500 text-white py-2 px-6 rounded hover:bg-green-600 transition-all mt-6 shadow-lg"
-            onClick={resetGame}
-          >
-            Play Again
-          </button>
+          <>
+            <button
+              className="bg-green-500 text-white py-2 px-6 rounded hover:bg-green-600 transition-all mt-6 shadow-lg"
+              onClick={resetGame}
+            >
+              Play Again
+            </button>
+            <p className="mt-4 text-green-600 font-semibold">{saveStatus}</p>
+          </>
         )}
       </div>
 

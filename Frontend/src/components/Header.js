@@ -77,6 +77,13 @@ function Header() {
             <ChatAlt2Icon className="w-5 h-5" />
             <span>Feedback</span>
           </button>
+          <button
+            className="flex items-center space-x-2 hover:text-teal-400 transition duration-300"
+            onClick={() => handleLinkClick('/ProgressDashboard')}
+          >
+            {/* <ChatAlt2Icon className="w-5 h-5" /> */}
+            <span>TrackProgress</span>
+          </button>
         </nav>
       </div>
 
@@ -100,6 +107,13 @@ function Header() {
             onClick={() => handleLinkClick('/FeedbackForm')}
           >
             Feedback
+          </button>
+
+          <button
+            className="block w-full text-left px-6 py-2 hover:bg-gray-600 transition duration-300"
+            onClick={() => handleLinkClick('/ProgressDashboard')}
+          >
+            TrackProgress
           </button>
         </nav>
       )}

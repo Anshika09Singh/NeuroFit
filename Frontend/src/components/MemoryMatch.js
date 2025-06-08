@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { saveProgress } from "../api"; // adjust the path to your actual API handler
 
 const initialCards = [
   { id: 1, name: 'A', isFlipped: false, isMatched: false },
@@ -18,28 +19,38 @@ const MemoryMatch = () => {
   const [canFlip, setCanFlip] = useState(true);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
 
-  // Reset the turn
   const resetTurn = useCallback(() => {
     setFirstFlippedCard(null);
     setSecondFlippedCard(null);
     setCanFlip(true);
 
-    // Check for game over
-    if (cards.every((card) => card.isMatched)) {
+    const allMatched = cards.every((card) => card.isMatched);
+    if (allMatched) {
+      const timeSpent = Math.round((Date.now() - startTime) / 1000);
       setGameOver(true);
-    }
-  }, [cards]);
 
-  // Shuffle cards at start
+      // Save progress
+      const progress = {
+        gameName: "Memory Match",
+        score,
+        difficulty: "Medium", // You can dynamically update this
+        timeSpent: `${Math.floor(timeSpent / 60)}m ${timeSpent % 60}s`,
+        dateTime: new Date().toISOString(),
+      };
+      saveProgress(progress);
+    }
+  }, [cards, score, startTime]);
+
   useEffect(() => {
     const shuffledCards = [...initialCards].sort(() => Math.random() - 0.5);
     setCards(shuffledCards);
     setScore(0);
     setGameOver(false);
+    setStartTime(Date.now());
   }, []);
 
-  // Handle card click
   const handleCardClick = (index) => {
     if (!canFlip || cards[index].isFlipped || cards[index].isMatched) return;
 
@@ -55,7 +66,6 @@ const MemoryMatch = () => {
     }
   };
 
-  // Handle matching logic
   useEffect(() => {
     if (firstFlippedCard && secondFlippedCard) {
       if (firstFlippedCard.name === secondFlippedCard.name) {
@@ -92,7 +102,7 @@ const MemoryMatch = () => {
           >
             <div className={`absolute w-full h-full flex items-center justify-center text-3xl font-bold transition-transform duration-300 
                             ${card.isFlipped || card.isMatched ? 'text-white' : 'text-transparent'}`}>
-              {card.isFlipped || card.isMatched ? card.name : ''}
+              {card.name}
             </div>
             <div className={`absolute w-full h-full flex items-center justify-center text-3xl font-bold transition-transform duration-300 
                             ${!(card.isFlipped || card.isMatched) ? 'text-white' : 'hidden'}`}>

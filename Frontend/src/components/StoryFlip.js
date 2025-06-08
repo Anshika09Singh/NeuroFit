@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
+import { saveProgress } from "../api"; // make sure this path is correct
 
 const initialCards = [
   { id: 1, content: "A", shortStory: "Once upon a time, in a mystical forest, there lived a wise old owl...", fullStoryLink: "/story/1" },
@@ -41,16 +42,24 @@ const StoryFlip = () => {
   useEffect(() => {
     if (firstCard && secondCard) {
       if (firstCard.content === secondCard.content) {
-        // Cards match
         const newCards = [...cards];
         newCards[firstCard.index].isMatched = true;
         newCards[secondCard.index].isMatched = true;
         setCards(newCards);
-        setStory(firstCard.shortStory); // Reveal short story
-        setFullStoryLink(firstCard.fullStoryLink); // Set full story link
+        setStory(firstCard.shortStory);
+        setFullStoryLink(firstCard.fullStoryLink);
+
+        // 🔥 Save progress to backend
+        saveProgress({
+          gameName: "StoryFlip",
+          score: 10, // or any logic based score
+          difficulty: "Easy",
+          timeSpent: "1m 30s",
+          dateTime: new Date().toISOString(),
+        });
+
         resetTurn();
       } else {
-        // Cards don't match, flip them back after a delay
         setTimeout(() => {
           const newCards = [...cards];
           newCards[firstCard.index].isFlipped = false;

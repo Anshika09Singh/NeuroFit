@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Import Router and Route
 import './index.css'; // Import Tailwind CSS
-import MindMapExplorer from './MindMapExplorer';
+import MindMapExplorer from './components/MindMapExplorer';
 import BrainFitnessSimulator from "./components/BrainFitnessSimulator";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
@@ -14,6 +14,7 @@ import StoryFlip from "./components/StoryFlip";
 import TaskJuggler from "./components/TaskJuggler";
 import AboutCreator from "./components/AboutCreator";
 import FeedbackForm from "./components/FeedbackForm";
+import ProgressDashboard from "./components/ProgressDashboard";
 
 function App() {
   // Declare state for showing feedback form
@@ -37,6 +38,7 @@ function App() {
                 <HeroSection />
                 <Features />
                 <AboutCreator />
+               
 
                 {/* Button to toggle FeedbackForm */}
                 <div className="text-center mt-6">
@@ -55,7 +57,7 @@ function App() {
 
             {/* GameHub page */}
             <Route path="/games" element={<GameHub />} />
-
+<Route path="/ProgressDashboard" element={<ProgressDashboard />} />
             {/* Memory Game Route */}
             <Route path="/games/memory" element={<MemoryMatch />} />
 

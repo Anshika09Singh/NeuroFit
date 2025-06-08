@@ -1,33 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import Task from './Task';
 import { tasks } from '../TaskData';
-import Confetti from 'react-confetti'; // Optional confetti for rewards effect
+import Confetti from 'react-confetti';
+import { saveProgress } from '../api'; // Adjust path as needed
 
 const TaskJuggler = () => {
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
-  const taskDuration = 5000; // 5 seconds fixed, removed setTaskDuration since it's unused
+  const taskDuration = 5000; // 5 seconds
   const [showReward, setShowReward] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (currentTaskIndex < tasks.length - 1) {
         setCurrentTaskIndex((prevIndex) => prevIndex + 1);
       } else {
+        const endTime = Date.now();
+        const timeSpentSec = Math.round((endTime - startTime) / 1000);
+        const timeSpent = `${Math.floor(timeSpentSec / 60)}m ${timeSpentSec % 60}s`;
+
+        const finalScore = score;
         setIsGameOver(true);
-        if (score >= tasks.length * 0.8) { // Reward for 80% success
+
+        if (finalScore >= tasks.length * 0.8) {
           setShowReward(true);
         }
+
+        // Save progress on game end
+        const progress = {
+          gameName: 'Task Juggler',
+          score: finalScore,
+          difficulty: 'Medium', // Set dynamically if needed
+          timeSpent,
+          dateTime: new Date().toISOString(),
+        };
+        saveProgress(progress);
       }
     }, taskDuration);
 
     return () => clearTimeout(timer);
-  }, [currentTaskIndex, score, taskDuration]); // added score here as dependency
+  }, [currentTaskIndex, score, startTime]);
 
   const handleAnswer = (isCorrect) => {
     if (isCorrect) {
-      setScore((prevScore) => prevScore + 1); // use functional update to avoid stale closures
+      setScore((prevScore) => prevScore + 1);
     }
   };
 
@@ -41,7 +59,7 @@ const TaskJuggler = () => {
             <>
               <p className="text-xl text-green-500 mb-4">🎉 Congratulations! You've earned a reward! 🎉</p>
               <p className="text-md mb-4">You've demonstrated impressive cognitive flexibility.</p>
-              <Confetti /> {/* Confetti effect when reward is earned */}
+              <Confetti />
             </>
           ) : (
             <p className="text-lg text-gray-700">Try again to improve your score!</p>

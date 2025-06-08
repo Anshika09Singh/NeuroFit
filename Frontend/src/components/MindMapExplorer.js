@@ -1,11 +1,12 @@
-// src/MindMapExplorer.js
 import React, { useState } from 'react';
 import ReactFlow, { applyNodeChanges, useNodesState } from 'react-flow-renderer';
+import { saveProgress } from '../api'; // adjust path as needed
 
 const MindMapExplorer = () => {
   const [centralTheme, setCentralTheme] = useState('');
   const [branchContent, setBranchContent] = useState('');
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [startTime] = useState(Date.now());
 
   const handleAddBranch = () => {
     if (!branchContent) return;
@@ -18,6 +19,24 @@ const MindMapExplorer = () => {
 
     setNodes((prev) => [...prev, newBranch]);
     setBranchContent('');
+
+    // Save progress if there's already a central node and at least 1 branch
+    const hasCentral = nodes.find((n) => n.id === 'central');
+    if (hasCentral && nodes.length >= 2) {
+      const endTime = Date.now();
+      const timeSpentSec = Math.round((endTime - startTime) / 1000);
+      const timeSpent = `${Math.floor(timeSpentSec / 60)}m ${timeSpentSec % 60}s`;
+
+      const progress = {
+        gameName: 'Mind Map Explorer',
+        score: nodes.length - 1, // number of branches
+        difficulty: 'Creative',
+        timeSpent,
+        dateTime: new Date().toISOString(),
+      };
+
+      saveProgress(progress);
+    }
   };
 
   const handleSubmitTheme = (e) => {
@@ -81,7 +100,7 @@ const MindMapExplorer = () => {
             nodes={nodes}
             onNodesChange={onNodesChange}
             style={{ width: '100%', height: '100%' }}
-            onNodeClick={(event, node) => handleRemoveNode(node.id)} // Remove node on click
+            onNodeClick={(event, node) => handleRemoveNode(node.id)}
           />
         </div>
       </div>
