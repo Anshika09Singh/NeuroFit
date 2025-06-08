@@ -1,4 +1,3 @@
-// src/components/CognitiveFlexibilityTrainer.js
 import React, { useState, useEffect } from 'react';
 import Task from './Task';
 import { tasks } from '../TaskData';
@@ -8,13 +7,13 @@ const TaskJuggler = () => {
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [taskDuration, setTaskDuration] = useState(5000); // 5 seconds
+  const taskDuration = 5000; // 5 seconds fixed, removed setTaskDuration since it's unused
   const [showReward, setShowReward] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (currentTaskIndex < tasks.length - 1) {
-        setCurrentTaskIndex(currentTaskIndex + 1);
+        setCurrentTaskIndex((prevIndex) => prevIndex + 1);
       } else {
         setIsGameOver(true);
         if (score >= tasks.length * 0.8) { // Reward for 80% success
@@ -24,11 +23,11 @@ const TaskJuggler = () => {
     }, taskDuration);
 
     return () => clearTimeout(timer);
-  }, [currentTaskIndex, taskDuration]);
+  }, [currentTaskIndex, score, taskDuration]); // added score here as dependency
 
   const handleAnswer = (isCorrect) => {
     if (isCorrect) {
-      setScore(score + 1);
+      setScore((prevScore) => prevScore + 1); // use functional update to avoid stale closures
     }
   };
 

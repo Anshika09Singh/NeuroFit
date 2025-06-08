@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PlayIcon } from '@heroicons/react/solid'; // Ensure HeroIcons is installed
+// Removed PlayIcon import because it's unused
 
 function HeroSection() {
   const navigate = useNavigate();
@@ -31,12 +31,11 @@ function HeroSection() {
 
         {/* Get Started Button */}
         <button
-    onClick={() => handleLinkClick('/games')}
-    className=" justify-center space-x-2 bg-teal-500 text-white px-5 py-2 rounded-lg hover:bg-teal-600 transition duration-300 shadow-md transform hover:scale-105"
-  >
-    
-    <div>Get Started</div>
-  </button>
+          onClick={() => handleLinkClick('/games')}
+          className="justify-center space-x-2 bg-teal-500 text-white px-5 py-2 rounded-lg hover:bg-teal-600 transition duration-300 shadow-md transform hover:scale-105"
+        >
+          <div>Get Started</div>
+        </button>
       </div>
     </section>
   );

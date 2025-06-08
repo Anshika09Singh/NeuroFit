@@ -33,21 +33,32 @@ function App() {
             {/* Landing page */}
             <Route path="/" element={
               <>
-              <Header />
+                <Header />
                 <HeroSection />
                 <Features />
                 <AboutCreator />
-                
-                {showFeedbackForm && <FeedbackForm />} {/* Show FeedbackForm if true */}
+
+                {/* Button to toggle FeedbackForm */}
+                <div className="text-center mt-6">
+                  <button
+                    onClick={toggleFeedbackForm}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  >
+                    {showFeedbackForm ? "Hide Feedback Form" : "Give Feedback"}
+                  </button>
+                </div>
+
+                {/* Conditionally render FeedbackForm */}
+                {showFeedbackForm && <FeedbackForm />}
               </>
             } />
-            
+
             {/* GameHub page */}
             <Route path="/games" element={<GameHub />} />
-            
+
             {/* Memory Game Route */}
             <Route path="/games/memory" element={<MemoryMatch />} />
-            
+
             {/* Puzzle Game Route */}
             <Route path="/games/puzzle" element={<PuzzleWord />} />
             <Route path="/games/story" element={<StoryFlip />} />
@@ -61,6 +72,7 @@ function App() {
             <Route path="/FeedbackForm" element={<FeedbackForm />} /> {/* Separate route for feedback form */}
           </Routes>
         </div>
+
         <Footer /> {/* Footer will be at the bottom of every page */}
       </div>
     </Router>
