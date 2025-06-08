@@ -1,7 +1,7 @@
 // src/api.js
 export const saveProgress = async (progress) => {
   try {
-    const response = await fetch("http://localhost:5000/save-progress", {
+    const response = await fetch("https://neurofit-1backend.onrender.com/save-progress", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
