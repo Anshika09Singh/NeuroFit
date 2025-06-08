@@ -9,7 +9,7 @@ const ProgressDashboard = () => {
   // Fetch progress data from server
   const fetchProgress = () => {
     setLoading(true);
-    fetch("https://neurofit-1backend.onrender.com")
+    fetch("https://neurofit-1backend.onrender.com/save-progress")
       .then((res) => res.json())
       .then((data) => {
         setProgress(data);
