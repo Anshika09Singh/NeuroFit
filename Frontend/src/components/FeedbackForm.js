@@ -12,7 +12,7 @@ const FeedbackForm = () => {
     const feedback = { rating, comments, email };
 
     try {
-      const response = await fetch("http://localhost:5000/send-feedback", {
+      const response = await fetch("${https://neuro-fit-64ts.vercel.app/}/send-feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
