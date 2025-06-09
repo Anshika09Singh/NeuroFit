@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const BACKEND_URL = "https://neuro-fit-64ts.vercel.app"; // change if needed
+const BACKEND_URL = "https://neurofit-1backend.onrender.com"; // change if needed
 
 const ProgressDashboard = () => {
   const [progress, setProgress] = useState([]);
