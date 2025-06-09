@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+const BACKEND_URL = "https://neuro-fit-64ts.vercel.app"; // change if needed
+
 const ProgressDashboard = () => {
   const [progress, setProgress] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -9,8 +11,11 @@ const ProgressDashboard = () => {
   // Fetch progress data from server
   const fetchProgress = () => {
     setLoading(true);
-    fetch("${https://neuro-fit-64ts.vercel.app/}/save-progress")
-      .then((res) => res.json())
+    fetch(`${BACKEND_URL}/save-progress`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch progress");
+        return res.json();
+      })
       .then((data) => {
         setProgress(data);
         setLoading(false);
@@ -31,7 +36,7 @@ const ProgressDashboard = () => {
     setSaving(true);
     setError(null);
 
-    const progress = {
+    const newProgress = {
       gameName: "Task Juggler",
       score: 87,
       difficulty: "Medium",
@@ -40,18 +45,17 @@ const ProgressDashboard = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/save-progress", {
+      const res = await fetch(`${BACKEND_URL}/save-progress`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(progress),
+        body: JSON.stringify(newProgress),
       });
 
       const data = await res.json();
       console.log("Progress status:", data.message);
 
       if (res.ok) {
-        // Refresh the progress list after saving
-        fetchProgress();
+        fetchProgress(); // Refresh list after saving
       } else {
         setError(data.message || "Failed to save progress");
       }
