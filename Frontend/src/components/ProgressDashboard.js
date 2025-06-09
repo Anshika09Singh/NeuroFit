@@ -11,7 +11,7 @@ const ProgressDashboard = () => {
   // Fetch progress data from server
   const fetchProgress = () => {
     setLoading(true);
-    fetch(`${BACKEND_URL}/save-progress`)
+    fetch(`${BACKEND_URL}/get-progress`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch progress");
         return res.json();
