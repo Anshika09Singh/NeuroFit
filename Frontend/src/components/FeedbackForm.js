@@ -9,27 +9,36 @@ const FeedbackForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Basic validation for rating
+    if (rating < 1 || rating > 5) {
+      alert("Please provide a rating between 1 and 5.");
+      return;
+    }
+
     const feedback = { rating, comments, email };
 
     try {
-      const response = await fetch(`https://neuro-fit-64ts.vercel.app/send-feedback`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(feedback),
-      });
+      const response = await fetch(
+        "https://neurofit-1backend.onrender.com/send-feedback",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(feedback),
+        }
+      );
 
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message); // Notify user of success
+        alert(result.message || "Feedback submitted successfully!");
         setIsSubmitted(true);
         setRating(1);
         setComments("");
         setEmail("");
       } else {
-        alert(result.message); // Notify user of any issues
+        alert(result.message || "Failed to submit feedback.");
       }
     } catch (error) {
       console.error("Error submitting feedback:", error);
@@ -68,9 +77,10 @@ const FeedbackForm = () => {
               type="number"
               id="rating"
               value={rating}
-              onChange={(e) => setRating(e.target.value)}
+              onChange={(e) => setRating(Number(e.target.value))}
               min="1"
               max="5"
+              required
               className="mt-2 p-3 w-full rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-opacity duration-200 ease-in-out opacity-90"
             />
           </div>
@@ -88,6 +98,7 @@ const FeedbackForm = () => {
               onChange={(e) => setComments(e.target.value)}
               placeholder="Write your feedback here..."
               className="mt-2 p-3 w-full rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-opacity duration-200 ease-in-out opacity-90"
+              rows={4}
             ></textarea>
           </div>
 
