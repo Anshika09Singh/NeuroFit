@@ -134,7 +134,7 @@ This hackathon reminded me **why I love building things** — not for metrics, b
 ## 🎥 Demo Video
 
 🎬 **Unlisted YouTube Demo (≤ 180 seconds)**  
-🔗[ *Add your unlisted YouTube link here*
+🔗[youtube link
 ](https://www.youtube.com/watch?v=iRN289Y9yFQ)
 
 The demo focuses on:
